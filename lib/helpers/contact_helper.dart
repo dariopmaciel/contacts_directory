@@ -95,11 +95,17 @@ class ContactHelper {
     }
     return listContact;
   }
-
+//QTD de itens, contador de itens
   Future<int?> getNumber() async {
     Database dbContact = await db;
     return Sqflite.firstIntValue(
         await dbContact.rawQuery("SELECT COUNT(*)FROM $contactTable"));
+  }
+
+//fechando o BD
+  Future close() async {
+    Database dbContact = await db;
+    dbContact.close();
   }
 }
 
