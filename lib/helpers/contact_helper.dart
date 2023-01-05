@@ -47,13 +47,6 @@ class ContactHelper {
     });
   }
 
-//C
-  Future<Contact> saveContact(Contact contact) async {
-    Database dbContact = await db;
-    contact.id = await dbContact.insert(contactTable, contact.toMap());
-    return contact;
-  }
-
 //R
   Future<Contact?> getContact(int id) async {
     Database dbContact = await db;
@@ -68,11 +61,11 @@ class ContactHelper {
     }
   }
 
-//U
-  Future<int> updateContact(Contact contact) async {
+//C
+  Future<Contact> saveContact(Contact contact) async {
     Database dbContact = await db;
-    return await dbContact.update(contactTable, contact.toMap(),
-        where: "$idColumns = ?", whereArgs: [contact.id]);
+    contact.id = await dbContact.insert(contactTable, contact.toMap());
+    return contact;
   }
 
 //D
@@ -80,6 +73,13 @@ class ContactHelper {
     Database dbContact = await db;
     return await dbContact
         .delete(contactTable, where: "$idColumns = ?", whereArgs: [id]);
+  }
+
+//U
+  Future<int> updateContact(Contact contact) async {
+    Database dbContact = await db;
+    return await dbContact.update(contactTable, contact.toMap(),
+        where: "$idColumns = ?", whereArgs: [contact.id]);
   }
 
 //Carregar todos os contatos
@@ -95,6 +95,7 @@ class ContactHelper {
     }
     return listContact;
   }
+
 //QTD de itens, contador de itens
   Future<int?> getNumber() async {
     Database dbContact = await db;
@@ -120,7 +121,7 @@ class Contact {
 
   //Transforma os dados declarados em um Mapa
   Map toMap() {
-    Map<String?, dynamic> map = {
+    Map<String, dynamic> map = {
       nameColumn: name,
       emailColumn: email,
       phoneColumn: phone,
@@ -132,6 +133,7 @@ class Contact {
     return map;
   }
 
+  Contact();
   //contrutor //Recupera as informações/dados do Mapa
   Contact.fromMap(Map map) {
     id = map[idColumns];
