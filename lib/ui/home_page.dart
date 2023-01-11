@@ -12,6 +12,19 @@ class _HomePageState extends State<HomePage> {
   @override
   ContactHelper helper = ContactHelper();
 
+  List<dynamic> contacts = [];
+  //List<Contact> contacts = [];
+
+  @override
+  void initState() {
+    super.initState();
+    helper.getAllContacts().then((list) {
+      setState(() {
+        contacts = list;
+      });
+    });
+  }
+
   // @override
   // void initState() {
   //   super.initState();
@@ -29,7 +42,6 @@ class _HomePageState extends State<HomePage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.red,
         title: const Text("Lista de Contatos"),
@@ -73,8 +85,10 @@ class _HomePageState extends State<HomePage> {
         onPressed: () {},
         child: const Icon(Icons.add),
       ),
+      backgroundColor: Colors.white,
       body: ListView.builder(
-        itemCount: null,
+        padding: const EdgeInsets.all(10),
+        itemCount: contacts.length, //criar lista de contatos
         itemBuilder: (context, index) {},
       ),
     );
