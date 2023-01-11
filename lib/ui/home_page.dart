@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:contacts_directory/helpers/contact_helper.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +11,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  @override
   ContactHelper helper = ContactHelper();
 
   List<dynamic> contacts = [];
@@ -89,7 +90,66 @@ class _HomePageState extends State<HomePage> {
       body: ListView.builder(
         padding: const EdgeInsets.all(10),
         itemCount: contacts.length, //criar lista de contatos
-        itemBuilder: (context, index) {},
+        //chamando o card com as informações do banco ja salvas
+        itemBuilder: (context, index) {
+          return _contactCard(context, index);
+        },
+      ),
+    );
+  }
+
+  Widget _contactCard(BuildContext context, int index) {
+    return GestureDetector(
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            children: <Widget>[
+              Container(
+                height: 80,
+                width: 80,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: FileImage(File("image/person.png")),
+                  ),
+                  // image: DecorationImage(
+                  //   image: contacts[index].img != null
+                  //       ? FileImage(File(contacts[index].img))
+                  //       : AssetImage("image/person.png"),
+                  // ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      contacts[index].name ?? "",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                      ),
+                    ),
+                    Text(
+                      contacts[index].email ?? "",
+                      style: const TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    Text(
+                      contacts[index].phone ?? "",
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
