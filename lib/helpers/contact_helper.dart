@@ -1,22 +1,22 @@
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 import 'dart:async';
 
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
-
-const String contactTable = "contactTable";
-const String idColumn = "idColumn";
-const String nameColumn = "nameColumn";
-const String emailColumn = "emailColumn";
-const String phoneColumn = "phoneColumn";
-const String imgColumn = "imgColumn";
+final String contactTable = "contactTable";
+final String idColumn = "idColumn";
+final String nameColumn = "nameColumn";
+final String emailColumn = "emailColumn";
+final String phoneColumn = "phomeColumn";
+final String imgColumn = "imgColumn";
 
 class ContactHelper {
   static final ContactHelper _instance = ContactHelper.internal();
 
-  late Database _db;
   factory ContactHelper() => _instance;
 
   ContactHelper.internal();
+
+  Database _db;
 
   Future<Database> get db async {
     if (_db != null) {
@@ -29,23 +29,22 @@ class ContactHelper {
 
   Future<Database> initDb() async {
     final databasesPath = await getDatabasesPath();
-    final path = join(databasesPath, "contactsnew.db");
-
-    return await openDatabase(path, version: 1,
-        onCreate: (Database db, int newerVersion) async {
+    final path = join(databasesPath, "contacts.db");
+    return openDatabase(path, version: 1,
+        onCreate: (Database db, int newrVersion) async {
       await db.execute(
-          "CREATE TABLE $contactTable($idColumn INTEGER PRIMARY KEY, $nameColumn TEXT, $emailColumn TEXT,"
-          "$phoneColumn TEXT, $imgColumn TEXT)");
+          "CREATE TABLE $contactTable($idColumn INTEGER PRIMARY KEY, $nameColumn TEXT, $emailColumn TEXT, $phoneColumn TEXT, $imgColumn TEXT)");
     });
   }
 
   Future<Contact> saveContact(Contact contact) async {
     Database dbContact = await db;
-    contact.id = await dbContact.insert(contactTable, contact.toMap().cast());
+    contact.id =
+        await dbContact.insert(contactTable, contact.toMap()); //.cast()
     return contact;
   }
 
-  Future<Contact?> getContact(int id) async {
+  Future<Contact> getContact(int id) async {
     Database dbContact = await db;
     List<Map> maps = await dbContact.query(contactTable,
         columns: [idColumn, nameColumn, emailColumn, phoneColumn, imgColumn],
@@ -66,40 +65,33 @@ class ContactHelper {
 
   Future<int> updateContact(Contact contact) async {
     Database dbContact = await db;
-    return await dbContact.update(contactTable, contact.toMap().cast(),
-        where: "$idColumn = ?", whereArgs: [contact.id]);
+    return await dbContact.update(contactTable, contact.toMap(), //.cast()
+        where: "$idColumn=?",
+        whereArgs: [contact.id]);
   }
 
   Future<List> getAllContacts() async {
     Database dbContact = await db;
     List listMap = await dbContact.rawQuery("SELECT * FROM $contactTable");
-    List<Contact> listContact = [];
+    List<Contact> listContact = List(); //[]
     for (Map m in listMap) {
       listContact.add(Contact.fromMap(m));
     }
     return listContact;
   }
 
-  Future<int?> getNumber() async {
-    Database dbContact = await db;
-    return Sqflite.firstIntValue(
-        await dbContact.rawQuery("SELECT COUNT(*) FROM $contactTable"));
-  }
 
-  Future close() async {
-    Database dbContact = await db;
-    dbContact.close();
-  }
+
+
+  
 }
 
 class Contact {
-  late int id;
-  late String name;
-  late String email;
-  late String phone;
-  late String img;
-
-  Contact();
+  int id;
+  String name;
+  String email;
+  String phone;
+  String img;
 
   Contact.fromMap(Map map) {
     id = map[idColumn];
@@ -114,7 +106,7 @@ class Contact {
       nameColumn: name,
       emailColumn: email,
       phoneColumn: phone,
-      imgColumn: img
+      imgColumn: img,
     };
     if (id != null) {
       map[idColumn] = id;
@@ -124,6 +116,6 @@ class Contact {
 
   @override
   String toString() {
-    return "Contact(id: $id, name: $name, email: $email, phone: $phone, img: $img)";
+    return "Contact(id: $id, name: $name, email: $email, phone: $phone, img: $img )";
   }
 }
