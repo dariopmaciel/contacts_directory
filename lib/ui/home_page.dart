@@ -30,7 +30,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Colors.red,
+        title: const Text("Lista de Contatos"),
+        centerTitle: true,
+      ),
       drawer: Drawer(
         child: ListView(
           children: const [
@@ -65,13 +69,14 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.red,
         onPressed: () {},
         child: const Icon(Icons.add),
       ),
-      // body: ListView.builder(
-      //   itemCount: null,
-      //   itemBuilder: (context, index) {},
-      // ),
+      body: ListView.builder(
+        itemCount: null,
+        itemBuilder: (context, index) {},
+      ),
     );
   }
 }
