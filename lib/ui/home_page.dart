@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
   // void initState() {
   //   super.initState();
   //   Contact c = Contact();
-  //   c.name = "MArcos";
+  //   c.name = "paulo";
   //   c.email = "marcos@gmail.com";
   //   c.phone = "54654654";
   //   c.img = "imgTest";
@@ -41,11 +41,12 @@ class _HomePageState extends State<HomePage> {
   //   });
   // }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
-        title: const Text("Lista de Contatos"),
+        title: const Text("Contatos"),
         centerTitle: true,
       ),
       drawer: Drawer(
@@ -110,14 +111,14 @@ class _HomePageState extends State<HomePage> {
                 width: 80,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: FileImage(File("image/person.png")),
-                  ),
                   // image: DecorationImage(
-                  //   image: contacts[index].img != null
-                  //       ? FileImage(File(contacts[index].img))
-                  //       : AssetImage("image/person.png"),
+                  //   image: FileImage(File("images/person.png")),
                   // ),
+                  image: DecorationImage(
+                    image: contacts[index].img != null
+                        ? FileImage(File(contacts[index].img))
+                        : FileImage(File("images/person.png")),
+                  ),
                 ),
               ),
               Padding(
