@@ -104,7 +104,7 @@ class ContactHelper {
 }
 
 class Contact {
-  int? id;
+  late int id;
   late String name;
   late String email;
   late String phone;

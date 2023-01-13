@@ -6,9 +6,9 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 
 class ContactPage extends StatefulWidget {
-  final Contact contact;
+  Contact contact;
 
-  const ContactPage({super.key, required this.contact});
+  ContactPage({super.key, required this.contact});
 
   @override
   State<ContactPage> createState() => _ContactPageState();
@@ -16,6 +16,7 @@ class ContactPage extends StatefulWidget {
 
 class _ContactPageState extends State<ContactPage> {
   late Contact _editedContact;
+  bool _userEdited = false;
 
   @override
   void initState() {
@@ -43,23 +44,46 @@ class _ContactPageState extends State<ContactPage> {
       body: SingleChildScrollView(
         padding: EdgeInsets.all(10),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             GestureDetector(
               child: Container(
-                height: 80,
-                width: 80,
+                height: 140,
+                width: 140,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  // image: DecorationImage(
-                  //   image: FileImage(File("images/person.png")),
-                  // ),
                   image: DecorationImage(
-                    image: contacts[index].img != null
-                        ? FileImage(File(contacts[index].img))
+                    image: _editedContact.img != null
+                        ? FileImage(File(_editedContact.img))
                         : FileImage(File("images/person.png")),
                   ),
                 ),
-              ),,
+              ),
+            ),
+            TextField(
+              decoration: const InputDecoration(labelText: "Nome"),
+              onChanged: (value) {
+                _userEdited = true;
+                setState(() {
+                  _editedContact.name = value;
+                });
+              },
+            ),
+            TextField(
+              decoration: const InputDecoration(labelText: "E-mail"),
+              onChanged: (value) {
+                _userEdited = true;
+                _editedContact.email = value;
+              },
+              keyboardType: TextInputType.emailAddress,
+            ),
+            TextField(
+              decoration: const InputDecoration(labelText: "Fone"),
+              onChanged: (value) {
+                _userEdited = true;
+                _editedContact.phone = value;
+              },
+              keyboardType: TextInputType.number,
             ),
           ],
         ),

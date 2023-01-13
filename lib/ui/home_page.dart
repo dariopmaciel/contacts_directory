@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:contacts_directory/helpers/contact_helper.dart';
+import 'package:contacts_directory/ui/contact_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -84,7 +85,9 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.red,
-        onPressed: () {},
+        onPressed: () {
+          _showContactPage();
+        },
         child: const Icon(Icons.add),
       ),
       backgroundColor: Colors.white,
@@ -152,6 +155,18 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+      onTap: () {
+        _showContactPage(contact: contacts[index]);
+      },
     );
+  }
+
+  void _showContactPage({Contact? contact}) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ContactPage(
+                  contact: contact,
+                )));
   }
 }
